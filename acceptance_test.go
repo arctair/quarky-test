@@ -9,7 +9,7 @@ import (
 	"sync"
 	"testing"
 
-	. "arctair.com/go-starter"
+	. "arctair.com/quarky"
 )
 
 func assertNotError(t *testing.T, err error) {
