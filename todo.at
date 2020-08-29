@@ -1,0 +1,45 @@
+## acceptance tests
+1
+when
+POST /
+then
+GET well-known.location/ returns 200 json
+---
+cleanup
+when
+DELETE /
+then
+GET well-known.location/ returns 504
+---
+1
+when
+POST / with commit hash 1 (CH1)
+then
+GET well-known.location/version returns 200 CH1
+when
+POST / with commit hash 2 (CH2)
+then
+GET well-known.location/version returns 200 CH2
+---
+3
+when
+POST / with commit hash with passing acceptance tests (CHGOOD)
+POST / with commit hash with failing acceptance tests (CHBAD)
+then
+GET well-known.location/version returns 200 CHGOOD
+---
+1
+when
+POST / with commit hash 1 (CH1)
+then
+GET well-known.location/version returns 200 CH1
+when
+POST / with commit hash 2 (CH2)
+then
+GET well-known.location/version returns 200 CH2
+cleanup
+DELETE docker image CH1
+DELETE docker image CH2
+---
+reflect
+.at stands for acceptance tests. it's a dumb new format to describe a short-term plan in BDD. remember to reflect frequently
