@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"regexp"
+	"reflect"
 	"testing"
 	"time"
 
@@ -41,7 +41,7 @@ func TestAcceptance(t *testing.T) {
 		)
 	}
 
-	t.Run("GET /version returns sha1 and version", func(t *testing.T) {
+	t.Run("GET /version returns scenario", func(t *testing.T) {
 		response, err := http.Get(baseUrl)
 		assertNotError(t, err)
 
@@ -50,14 +50,9 @@ func TestAcceptance(t *testing.T) {
 		err = json.NewDecoder(response.Body).Decode(&got)
 		assertNotError(t, err)
 
-		sha1Pattern := regexp.MustCompile("^[0-9a-f]{40}(-dirty)?$")
-		versionPattern := regexp.MustCompile("^\\d+\\.\\d+\\.\\d+$")
-
-		if !sha1Pattern.MatchString(got["sha1"]) {
-			t.Errorf("got sha1 %s want 40 hex digits", got["sha1"])
-		}
-		if !versionPattern.MatchString(got["version"]) && !sha1Pattern.MatchString(got["version"]) {
-			t.Errorf("got version %s want semver or 40 hex digits", got["version"])
+		want := map[string]string{"scenario": "passing acceptance tests"}
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("got %v want %v", got, want)
 		}
 	})
 }

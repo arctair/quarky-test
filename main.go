@@ -6,28 +6,11 @@ import (
 	"sync"
 )
 
-var (
-	sha1    string
-	version string
-)
-
-type BuildVars struct{}
-
-func (b *BuildVars) getSha1() string {
-	return sha1
-}
-
-func (b *BuildVars) getVersion() string {
-	return version
-}
-
 // StartHTTPServer ...
 func StartHTTPServer(wg *sync.WaitGroup) *http.Server {
 	server := &http.Server{
-		Addr: ":5000",
-		Handler: &controller{
-			&BuildVars{},
-		},
+		Addr:    ":5000",
+		Handler: &controller{},
 	}
 
 	go func() {

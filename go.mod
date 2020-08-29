@@ -1,4 +1,4 @@
-module arctair.com/quarky
+module arctair.com/quarky-test
 
 go 1.14
 

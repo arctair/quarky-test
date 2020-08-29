@@ -5,20 +5,11 @@ import (
 	"net/http"
 )
 
-// Build ...
-type Build interface {
-	getSha1() string
-	getVersion() string
-}
-
-type controller struct {
-	build Build
-}
+type controller struct{}
 
 func (c *controller) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	bytes, err := json.Marshal(map[string]string{
-		"sha1":    c.build.getSha1(),
-		"version": c.build.getVersion(),
+		"scenario": "passing acceptance tests",
 	})
 	if err != nil {
 		panic(err)
