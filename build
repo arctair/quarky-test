@@ -1,0 +1,11 @@
+#!/bin/sh
+sha1=`git rev-parse HEAD`
+if [[ "`git status -s`" != '' ]]; then
+  version=$sha1-dirty
+else
+  root=`git rev-list --max-parents=0 HEAD`
+  version=1.0.`git rev-list --count HEAD $root`
+fi
+go build \
+  -o bin/quarky \
+  -ldflags "-X main.sha1=$sha1 -X main.version=$version"
